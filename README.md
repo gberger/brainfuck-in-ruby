@@ -7,7 +7,7 @@ Usage
 -----
 ```ruby
 # Require it
-require 'brainruyck'
+require 'brainrubyck'
 
 # Create a interpreter instance
 br = BrainRubyck.new
