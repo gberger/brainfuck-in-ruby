@@ -22,7 +22,7 @@ br.parse!
 # The output can also be found in an instance variable
 br.out
 
-# You can access the cursor location integer and the memory array
+# You can read the cursor location integer and the memory array
 br.cursor
 br.memory
 
