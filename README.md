@@ -31,10 +31,10 @@ br.dump
 
 # You can pass the ::new method an options hash
 opts = {
-  code => '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.',
-  logging => true,
-  dump_all => true,
-  initial_memory => 50
+  :code => '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.',
+  :logging => true,
+  :dump_all => true,
+  :initial_memory => 50
 }
 br2 = BrainRubyck.new(opts)
 
