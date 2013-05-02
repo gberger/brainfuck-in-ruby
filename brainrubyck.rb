@@ -4,7 +4,7 @@ class BrainRubyck
   attr_accessor :code, :logging, :dump_all
 
   # These are only readable, for debugging purposes and whatnot
-  attr_reader :cursor, :memory, :loops, :out
+  attr_reader :cursor, :memory, :out
 
   def initialize(code = "", opts = {})
     # The Brainfuck code
