@@ -1,7 +1,7 @@
 Brainrubyck
 ===========
 
-A Brainfuck interpreter written in Ruby.
+A [Brainfuck](http://en.wikipedia.org/wiki/Brainfuck) interpreter written in Ruby.
 
 Usage
 -----
