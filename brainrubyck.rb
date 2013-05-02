@@ -38,7 +38,7 @@ class BrainRubyck
     @loops = []
   end
 
-  def parse
+  def parse!
     # The char we're at in the @code string
     @i = 0
 
@@ -137,9 +137,3 @@ private
     @i += 1
   end
 end
-
-
-br = BrainRubyck.new
-br.code = '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.'
-puts br.code
-br.parse

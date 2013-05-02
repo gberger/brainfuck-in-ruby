@@ -28,7 +28,7 @@ describe BrainRubyck do
   describe "#plus" do
     it "increments the current memory position" do
       @br.code = "+"
-      @br.parse
+      @br.parse!
       @br.memory[@br.cursor].should eql 1
     end
   end
@@ -36,7 +36,7 @@ describe BrainRubyck do
   describe "#minus" do
     it "decrements the current memory position" do
       @br.code = "-"
-      @br.parse
+      @br.parse!
       @br.memory[@br.cursor].should eql -1
     end
   end
@@ -44,7 +44,7 @@ describe BrainRubyck do
   describe "#forward" do
     it "increments the cursor" do
       @br.code = ">"
-      @br.parse
+      @br.parse!
       @br.cursor.should eql 1
     end
   end
@@ -52,7 +52,7 @@ describe BrainRubyck do
   describe "#forward" do
     it "decrements the cursor" do
       @br.code = "<"
-      @br.parse
+      @br.parse!
       @br.cursor.should eql -1
     end
   end
@@ -60,7 +60,7 @@ describe BrainRubyck do
   describe "loop" do
     it "runs while current value != 0" do
       @br.code = "++[-]"
-      @br.parse
+      @br.parse!
       @br.memory[@br.cursor].should eql 0
     end
   end
@@ -68,27 +68,27 @@ describe BrainRubyck do
   describe "#output" do
     it "logs the output to @out" do
       @br.code = '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.'
-      @br.parse
+      @br.parse!
       @br.out.should eql "Hello World!\n"
     end
   end
 
-  describe "#parse" do
+  describe "#parse!" do
     it "returns the output" do
-      @br.parse.should_not be_nil
+      @br.parse!.should_not be_nil
     end
     it "return has length equal to the number of . commands" do
       @br.code = "+++...+++...+++...>>>...<<<..."
-      @br.parse.length.should eql 15
+      @br.parse!.length.should eql 15
     end
     it 'returns \'Hello World!\n\' when using the Hello World program' do
       @br.code = @hello_world_code
-      @br.parse.should eql "Hello World!\n" 
+      @br.parse!.should eql "Hello World!\n" 
     end
     it 'outputs \'Hello World!\n\' to STDOUT when using the Hello World program' do
       output = capture_stdout do 
         @br.code = @hello_world_code
-        @br.parse
+        @br.parse!
       end
       output.should eql "Hello World!\n"
     end
