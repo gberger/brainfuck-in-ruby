@@ -1,17 +1,22 @@
 class BrainRubyck
+  attr_accessor :code, :logging, :dump_all
 
-  def initialize(code, memory_limit=300, logging=false)
+  def initialize(code, opts = {})
     # The Brainfuck code
     @code = code
 
     # The cursor position
-    @position = 0
+    @cursor = opts[:initial_cursor] || 0
 
     # The memory set
-    @memory = Array.new(memory_limit, 0)
+    initial_memory = opts[:initial_memory] || 300
+    @memory = Array.new(initial_memory, 0)
 
-    # If true, logs every operation
-    @logging = logging
+    # If true, logs every operation and dumps the memory at the end
+    @logging = opts[:logging] || opts[:log] || opts[:debug] || false
+
+    # If true, dumps the memory after every operation
+    @dump_all = opts[:dump_all] || false
 
     # The Brainfuck commands
     @commands = {
@@ -24,15 +29,101 @@ class BrainRubyck
       '.' => :output,
       ',' => :input
     }
+
+    @loops = []
   end
 
   def parse
-    @code.each_char do |c|
-      puts [c, @commands[c], @commands[c].nil?].join(' ')
+
+    # The char we're at in the @code string
+    @i = 0
+
+    # The output of the program
+    @out = ""
+
+    # Using while so we can manipulate the index
+    while @i < @code.length
+      cmd = @commands[@code[@i]]
+
+      unless cmd.nil?
+        self.log(:before, cmd) if @logging
+        self.send(cmd)
+        self.log(:after, cmd) if @logging
+        self.dump if @dump_all
+      end
+
+    end
+
+    # Log the final state of memory at the end of the program
+    self.dump if @logging
+
+    # Return the output
+    @out
+  end
+
+  def plus
+    @memory[@cursor] += 1
+    self.next_i
+  end
+
+  def minus
+    @memory[@cursor] -= 1
+    self.next_i
+  end
+
+  def forward
+    @cursor += 1
+    self.next_i
+  end
+
+  def backward
+    @cursor -= 1
+    self.next_i
+  end
+
+  def begin_loop
+    @loops.push(@i)
+    self.next_i
+  end
+
+  def end_loop
+    if @memory[@cursor] == 0
+      @loops.pop
+      self.next_i
+    else
+      @i = @loops.last
     end
   end
 
-end
+  def output
+    ch = @memory[@cursor].chr 
+    print ch
+    @out << ch
+    self.next_i
+  end
 
-r = BrainRubyck.new('+-><[] a#')
-r.parse
+  def input
+    @memory[@cursor] = gets[0].ord
+    self.next_i
+  end
+
+  def next_i
+    @i += 1
+  end
+
+  # Useful for debugging
+  def dump
+    puts "Memory size:#{@memory.length}"
+    puts "Data as bytes: #{@memory.join(' ')}"
+    puts "Data as chars: " + @memory.map {|b| b.chr}.join(' ')
+  end
+
+  def log (whn, cmd)
+    if whn == :before
+      print "Before command "
+    else
+      print "After command "
+    end
+    print "'#{cmd}' (#{@code[@i]}): i: #{@i}, cursor: #{@cursor}, byte: #{@memory[@cursor]}, char: #{@memory[@cursor].chr}\n"
+  end
+end
