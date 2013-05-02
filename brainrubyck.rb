@@ -1,5 +1,6 @@
 class BrainRubyck
-  def self.new(code, memory_limit=300, logging=false)
+
+  def initialize(code, memory_limit=300, logging=false)
     # The Brainfuck code
     @code = code
 
@@ -11,7 +12,27 @@ class BrainRubyck
 
     # If true, logs every operation
     @logging = logging
+
+    # The Brainfuck commands
+    @commands = {
+      '+' => :plus,
+      '-' => :minus,
+      '>' => :forward,
+      '<' => :backward,
+      '[' => :begin_loop,
+      ']' => :end_loop,
+      '.' => :output,
+      ',' => :input
+    }
   end
+
+  def parse
+    @code.each_char do |c|
+      puts [c, @commands[c], @commands[c].nil?].join(' ')
+    end
+  end
+
 end
 
-r = BrainRubyck.new('+.')
+r = BrainRubyck.new('+-><[] a#')
+r.parse
