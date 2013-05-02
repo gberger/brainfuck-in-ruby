@@ -6,9 +6,9 @@ class BrainRubyck
   # These are only readable, for debugging purposes and whatnot
   attr_reader :cursor, :memory, :out
 
-  def initialize(code = "", opts = {})
+  def initialize(opts = {})
     # The Brainfuck code
-    @code = code 
+    @code = opts[:code] || ""
 
     # The cursor position
     @cursor = 0
