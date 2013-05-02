@@ -1,12 +1,17 @@
 class BrainRubyck
+
+  # These are accessible to be modified after the object has been instantiated
   attr_accessor :code, :logging, :dump_all
 
-  def initialize(code, opts = {})
+  # These are only readable, for debugging purposes and whatnot
+  attr_reader :cursor, :memory, :loops, :out
+
+  def initialize(code = "", opts = {})
     # The Brainfuck code
-    @code = code
+    @code = code 
 
     # The cursor position
-    @cursor = opts[:initial_cursor] || 0
+    @cursor = 0
 
     # The memory set
     initial_memory = opts[:initial_memory] || 300
@@ -34,7 +39,6 @@ class BrainRubyck
   end
 
   def parse
-
     # The char we're at in the @code string
     @i = 0
 
@@ -55,67 +59,21 @@ class BrainRubyck
     end
 
     # Log the final state of memory at the end of the program
-    self.dump if @logging
+    if @logging
+      puts "END OF PROGRAM"
+      self.dump 
+    end
 
     # Return the output
     @out
   end
 
-  def plus
-    @memory[@cursor] += 1
-    self.next_i
-  end
-
-  def minus
-    @memory[@cursor] -= 1
-    self.next_i
-  end
-
-  def forward
-    @cursor += 1
-    self.next_i
-  end
-
-  def backward
-    @cursor -= 1
-    self.next_i
-  end
-
-  def begin_loop
-    @loops.push(@i)
-    self.next_i
-  end
-
-  def end_loop
-    if @memory[@cursor] == 0
-      @loops.pop
-      self.next_i
-    else
-      @i = @loops.last
-    end
-  end
-
-  def output
-    ch = @memory[@cursor].chr 
-    print ch
-    @out << ch
-    self.next_i
-  end
-
-  def input
-    @memory[@cursor] = gets[0].ord
-    self.next_i
-  end
-
-  def next_i
-    @i += 1
-  end
-
-  # Useful for debugging
+  # Debugging methods
   def dump
     puts "Memory size:#{@memory.length}"
     puts "Data as bytes: #{@memory.join(' ')}"
     puts "Data as chars: " + @memory.map {|b| b.chr}.join(' ')
+    @memory
   end
 
   def log (whn, cmd)
@@ -126,4 +84,62 @@ class BrainRubyck
     end
     print "'#{cmd}' (#{@code[@i]}): i: #{@i}, cursor: #{@cursor}, byte: #{@memory[@cursor]}, char: #{@memory[@cursor].chr}\n"
   end
+
+private
+  # Brainfuck commands
+  def plus
+    @memory[@cursor] += 1
+    next_i
+  end
+
+  def minus
+    @memory[@cursor] -= 1
+    next_i
+  end
+
+  def forward
+    @cursor += 1
+    next_i
+  end
+
+  def backward
+    @cursor -= 1
+    next_i
+  end
+
+  def begin_loop
+    @loops.push(@i)
+    next_i
+  end
+
+  def end_loop
+    if @memory[@cursor] == 0
+      @loops.pop
+      next_i
+    else
+      @i = @loops.last
+    end
+  end
+
+  def output
+    ch = @memory[@cursor].chr 
+    print ch
+    @out << ch
+    next_i
+  end
+
+  def input
+    @memory[@cursor] = gets[0].ord
+    next_i
+  end
+
+  def next_i
+    @i += 1
+  end
 end
+
+
+br = BrainRubyck.new
+br.code = '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.'
+puts br.code
+br.parse
