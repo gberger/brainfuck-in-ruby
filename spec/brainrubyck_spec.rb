@@ -7,7 +7,7 @@ describe BrainRubyck do
     @br = BrainRubyck.new
   end
 
-  describe "#new" do
+  describe ".new" do
     it "returns a new BrainRubyck object with defaults" do
       @br.code.should eql ""
       @br.logging.should eql false
@@ -22,54 +22,6 @@ describe BrainRubyck do
     it "is accessible" do
       @br.code = "+++"
       @br.code.should eql "+++"
-    end
-  end
-
-  describe "#plus" do
-    it "increments the current memory position" do
-      @br.code = "+"
-      @br.parse!
-      @br.memory[@br.cursor].should eql 1
-    end
-  end
-
-  describe "#minus" do
-    it "decrements the current memory position" do
-      @br.code = "-"
-      @br.parse!
-      @br.memory[@br.cursor].should eql -1
-    end
-  end
-
-  describe "#forward" do
-    it "increments the cursor" do
-      @br.code = ">"
-      @br.parse!
-      @br.cursor.should eql 1
-    end
-  end
-
-  describe "#forward" do
-    it "decrements the cursor" do
-      @br.code = "<"
-      @br.parse!
-      @br.cursor.should eql -1
-    end
-  end
-
-  describe "loop" do
-    it "runs while current value != 0" do
-      @br.code = "++[-]"
-      @br.parse!
-      @br.memory[@br.cursor].should eql 0
-    end
-  end
-
-  describe "#output" do
-    it "logs the output to @out" do
-      @br.code = '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.'
-      @br.parse!
-      @br.out.should eql "Hello World!\n"
     end
   end
 
@@ -92,7 +44,40 @@ describe BrainRubyck do
       end
       output.should eql "Hello World!\n"
     end
+    it "logs the output to @out" do
+      @br.code = '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.'
+      @br.parse!
+      @br.out.should eql "Hello World!\n"
+    end
+    it "starts the cursor at 0" do
+      @br.code = ""
+      @br.cursor.should eql 0
+    end
+    it "increments the current memory position with +" do
+      @br.code = "+"
+      @br.parse!
+      @br.memory[@br.cursor].should eql 1
+    end
+    it "decrements the current memory position with -" do
+      @br.code = "-"
+      @br.parse!
+      @br.memory[@br.cursor].should eql -1
+    end
+    it "increments the cursor with >" do
+      @br.code = ">"
+      @br.parse!
+      @br.cursor.should eql 1
+    end
+    it "decrements the cursor with <" do
+      @br.code = "<"
+      @br.parse!
+      @br.cursor.should eql -1
+    end
+    it "loops while current value != 0 with [ and ]" do
+      @br.code = "++[-]"
+      @br.parse!
+      @br.memory[@br.cursor].should eql 0
+    end
   end
-
 
 end

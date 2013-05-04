@@ -76,6 +76,8 @@ class BrainRubyck
     @memory
   end
 
+private
+
   def log (whn, cmd)
     if whn == :before
       print "Before command "
@@ -85,7 +87,6 @@ class BrainRubyck
     print "'#{cmd}' (#{@code[@i]}): i: #{@i}, cursor: #{@cursor}, byte: #{@memory[@cursor]}, char: #{@memory[@cursor].chr}\n"
   end
 
-private
   # Brainfuck commands
   def plus
     @memory[@cursor] += 1
@@ -133,6 +134,7 @@ private
     next_i
   end
 
+  # Helpers
   def next_i
     @i += 1
   end
