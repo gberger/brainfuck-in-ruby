@@ -50,7 +50,7 @@ class BrainRubyck
       cmd = @commands[@code[@i]]
 
       if cmd.nil?
-        self.send(:next_i)
+        next_i
       else
         log(:before, cmd) if @logging
         self.send(cmd)
@@ -88,7 +88,7 @@ private
     end
     print "'#{cmd}' (#{@code[@i]}): i: #{@i}, cursor: #{@cursor}, byte: #{@memory[@cursor]}, char: #{@memory[@cursor].chr}\n"
   end
-  
+
   # Brainfuck commands
   def plus
     @memory[@cursor] += 1
