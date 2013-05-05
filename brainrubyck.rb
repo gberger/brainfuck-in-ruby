@@ -49,10 +49,12 @@ class BrainRubyck
     while @i < @code.length
       cmd = @commands[@code[@i]]
 
-      unless cmd.nil?
-        self.log(:before, cmd) if @logging
+      if cmd.nil?
+        self.send(:next_i)
+      else
+        log(:before, cmd) if @logging
         self.send(cmd)
-        self.log(:after, cmd) if @logging
+        log(:after, cmd) if @logging
         self.dump if @dump_all
       end
 
@@ -86,7 +88,7 @@ private
     end
     print "'#{cmd}' (#{@code[@i]}): i: #{@i}, cursor: #{@cursor}, byte: #{@memory[@cursor]}, char: #{@memory[@cursor].chr}\n"
   end
-
+  
   # Brainfuck commands
   def plus
     @memory[@cursor] += 1

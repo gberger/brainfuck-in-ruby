@@ -76,6 +76,11 @@ describe BrainRubyck do
       br.parse!
       expect(br.memory[br.cursor]).to eq 0
     end
+    it "ignores comments" do
+      len = hello_world_code.length
+      br.code = "this is a comment" + hello_world_code + "this is another one"
+      expect(br.parse!).to eq "Hello World!\n"
+    end
   end
 
 end
