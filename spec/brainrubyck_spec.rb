@@ -24,8 +24,11 @@ describe BrainRubyck do
   end
 
   describe "#parse!" do
-    it "returns the output" do
+    it "returns something" do
       expect(br.parse!).not_to be_nil
+    end
+    it "returns a string" do
+      expect(br.parse!).to be_a String
     end
     it "return has length equal to the number of . commands" do
       br.code = "+++...+++...+++...>>>...<<<..."
