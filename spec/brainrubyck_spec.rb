@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe BrainRubyck do 
+describe BrainRubyck do
 
   let(:hello_world_code) { '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.' }
   let(:br) { BrainRubyck.new }
@@ -32,14 +32,14 @@ describe BrainRubyck do
     end
     it "return has length equal to the number of . commands" do
       br.code = "+++...+++...+++...>>>...<<<..."
-      expect(br.parse!.length).to eq 15
+      expect(capture_stdout { br.parse! }.length).to eq 15
     end
     it 'returns \'Hello World!\n\' when using the Hello World program' do
       br.code = hello_world_code
-      expect(br.parse!).to eq "Hello World!\n" 
+      expect(capture_stdout { br.parse! }).to eq "Hello World!\n"
     end
     it 'outputs \'Hello World!\n\' to STDOUT when using the Hello World program' do
-      output = capture_stdout do 
+      output = capture_stdout do
         br.code = hello_world_code
         br.parse!
       end
@@ -47,7 +47,7 @@ describe BrainRubyck do
     end
     it "logs the output to @out" do
       br.code = '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.'
-      br.parse!
+      capture_stdout { br.parse! }
       expect(br.out).to eq "Hello World!\n"
     end
     it "starts the cursor at 0" do
@@ -82,7 +82,7 @@ describe BrainRubyck do
     it "ignores comments" do
       len = hello_world_code.length
       br.code = "this is a comment" + hello_world_code + "this is another one"
-      expect(br.parse!).to eq "Hello World!\n"
+      expect(capture_stdout { br.parse! }).to eq "Hello World!\n"
     end
   end
 
