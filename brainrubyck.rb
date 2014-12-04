@@ -86,7 +86,7 @@ private
     else
       print "After command "
     end
-    print "'#{cmd}' (#{@code[@i]}): i: #{@i}, cursor: #{@cursor}, byte: #{@memory[@cursor]}, char: #{@memory[@cursor].chr}\n"
+    print "'#{cmd}' (#{@code[@i]}): i: #{@i}, cursor: #{@cursor}, byte: #{@memory[@cursor]}, char: #{@memory[@cursor].chr}, loops: #{@loops}\n"
   end
 
   # Brainfuck commands
@@ -111,8 +111,22 @@ private
   end
 
   def begin_loop
-    @loops.push(@i)
-    next_i
+    if @memory[@cursor] == 0
+      loop_count = 1
+      while loop_count > 0
+        next_i
+        case @commands[@code[@i]]
+        when :begin_loop
+          loop_count += 1
+        when :end_loop
+          loop_count -= 1
+        end
+      end
+      next_i
+    else
+      @loops.push(@i)
+      next_i
+    end
   end
 
   def end_loop
@@ -120,7 +134,7 @@ private
       @loops.pop
       next_i
     else
-      @i = @loops.last
+      @i = @loops.pop
     end
   end
 

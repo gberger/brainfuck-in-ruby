@@ -3,6 +3,7 @@ require 'spec_helper'
 describe BrainRubyck do
 
   let(:hello_world_code) { '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.' }
+  let(:alternate_hello_word) { '>++++++++[<+++++++++>-]<.>>+>+>++>[-]+<[>[->+<<++++>]<<]>.+++++++..+++.>>+++++++.<<<[[-]<[-]>]<+++++++++++++++.>>.+++.------.--------.>>+.>++++.' }
   let(:br) { BrainRubyck.new }
 
   describe ".new" do
@@ -44,6 +45,10 @@ describe BrainRubyck do
         br.parse!
       end
       expect(output).to eq "Hello World!\n"
+    end
+    it 'returns \'Hello World!\n\' when using the Alternate Hello World program' do
+      br.code = alternate_hello_word
+      expect(capture_stdout { br.parse! }).to eq "Hello World!\n"
     end
     it "logs the output to @out" do
       br.code = '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.'
